@@ -3,18 +3,16 @@ var router = express.Router()
 const nodeMailer = require('nodemailer')
 //const BodyParser = require('body-parser')
 const Mongoose = require('mongoose')
+require('dotenv').config()
 const {
   ResetDetails
 } = require('../DBConfig')
 const crypto = require('crypto')
 const cors = require('cors')
-const {
-  log
-} = require('console')
 
 
 router.use(cors())
-require('dotenv').config()
+
 //DataBase Connectio Set Up
 const DbUrl = process.env.DB_URL
 Mongoose.connect(process.env.DB_URL)
@@ -149,7 +147,7 @@ router.get('/send', function (req, res) {
 //
 router.post('/verification', async (req, res) => {
   console.log("otp", req.body);
-  
+
   try {
     const deadDate = new Date().toLocaleTimeString()
     const FindData = await ResetDetails.findOne({
@@ -165,9 +163,10 @@ router.post('/verification', async (req, res) => {
         })
 
 
-      }
-      else{
-        res.status(400).json({message:"Otp Not Match"})
+      } else {
+        res.status(400).json({
+          message: "Otp Not Match"
+        })
       }
     } else {
       return res.status(400).json({
@@ -193,10 +192,13 @@ router.post('/Change', async (req, res) => {
         password: req.body.password
       }
     })
-    if(passwordChanged){
-      return res.status(200).json({message:"password changed successfuly"})
-    }
-    else return res.status(400).json({message:"password Not Changed"})
+    if (passwordChanged) {
+      return res.status(200).json({
+        message: "password changed successfuly"
+      })
+    } else return res.status(400).json({
+      message: "password Not Changed"
+    })
   } catch (error) {
     console.log(error);
     res.status(400).json({
@@ -211,13 +213,17 @@ router.post('/login', async (req, res) => {
     const UserAvailable = await ResetDetails.findOne({
       email: req.body.email
     }).exec()
-    if(UserAvailable) {
-      if(UserAvailable.password ==req.body.password){
-        return res.status(200).json({mesage:req.body.email})
-      }
-      else return res.status(400).json({message:"Password Is Not Correct"})
-    }
-    else return res.status(400).json({message:"user Not Exist"})
+    if (UserAvailable) {
+      if (UserAvailable.password == req.body.password) {
+        return res.status(200).json({
+          mesage: req.body.email
+        })
+      } else return res.status(400).json({
+        message: "Password Is Not Correct"
+      })
+    } else return res.status(400).json({
+      message: "user Not Exist"
+    })
   } catch (err) {
     console.log(err);
   }
