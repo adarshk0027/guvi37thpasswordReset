@@ -1,7 +1,7 @@
 var express = require('express')
 var router = express.Router()
 const nodeMailer = require('nodemailer')
-const BodyParser = require('body-parser')
+//const BodyParser = require('body-parser')
 const Mongoose = require('mongoose')
 const {
   ResetDetails
@@ -17,7 +17,7 @@ router.use(cors())
 require('dotenv').config()
 //DataBase Connectio Set Up
 const DbUrl = process.env.DB_URL
-Mongoose.connect(DbUrl)
+Mongoose.connect(`${DbUrl}`)
 Mongoose.connection
   .once('open', () => console.log('Connected Mongoose'))
   .on('error', error => {
