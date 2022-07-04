@@ -17,7 +17,7 @@ router.use(cors())
 require('dotenv').config()
 //DataBase Connectio Set Up
 const DbUrl = process.env.DB_URL
-Mongoose.connect(`${DbUrl}`)
+Mongoose.connect(process.env.DB_URL)
 Mongoose.connection
   .once('open', () => console.log('Connected Mongoose'))
   .on('error', error => {
